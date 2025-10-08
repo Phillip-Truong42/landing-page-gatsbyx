@@ -110,10 +110,26 @@
     <div id="nav1" class="panel">
       <h1>THE VANGUARD</h1>
       <div class="subtitle">Người dẫn đầu</div>
-      <div class="input-row" style="margin-bottom:8px;">
-        <input id="email" type="email" placeholder="Nhập Gmail của bạn..." aria-label="Email" />
-        <button class="cta" id="signupBtn">Đăng ký</button>
-      </div>
+     
+     <form 
+  class="input-row" 
+  style="margin-bottom:8px;" 
+  action="https://hook.eu2.make.com/csxwrlh99r7xehjqkf869qmefd9cb6w1" 
+  method="POST"
+  id="emailForm"
+  onsubmit="return handleSubmit(event)"
+>
+  <input 
+    id="email" 
+    name="email" 
+    type="email" 
+    placeholder="Nhập Gmail của bạn..." 
+    aria-label="Email" 
+    required 
+  />
+  <button class="cta" type="submit">Đăng ký</button>
+</form>
+
       <div class="muted small">Nhập email để nhận hướng dẫn chuyển khoản. Rất nhanh — không spam.</div>
     </div>
 
@@ -171,15 +187,32 @@
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
 
-    signupBtn.addEventListener('click', ()=>{
-      const email = emailInput.value.trim();
-      if (!isValidEmail(email)){
-        alert('Vui lòng nhập Gmail hợp lệ');
-        emailInput.focus();
-        return;
-      }
-      showNav('nav2');
+  async function handleSubmit(e){
+  e.preventDefault(); // stop the page reload
+  const email = emailInput.value.trim();
+
+  if (!isValidEmail(email)){
+    alert('Vui lòng nhập Gmail hợp lệ');
+    emailInput.focus();
+    return false;
+  }
+
+  try {
+    // send to Make webhook
+    await fetch("https://hook.eu1.make.com/your-webhook-id", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email })
     });
+
+    showNav('nav2'); // show next section
+  } catch (err) {
+    alert("Lỗi kết nối. Vui lòng thử lại.");
+    console.error(err);
+  }
+  return false;
+}
+
 
     copyBtn.addEventListener('click', async ()=>{
       try{
@@ -194,15 +227,11 @@
     emailInput.addEventListener('keypress', (e)=>{ if (e.key === 'Enter') signupBtn.click(); });
   </script>
  
-    <form action="https://hook.eu2.make.com/csxwrlh99r7xehjqkf869qmefd9cb6w1" method="POST">
-     
-  <input type="email" name="email" placeholder="Enter your email" required>
-  <button type="submit">Join Waitlist</button>
-     
-</form>
+ 
 
 </body>
 </html>
+
 
 
 
