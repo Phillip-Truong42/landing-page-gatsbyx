@@ -1,2 +1,196 @@
-# landing-page-gatsbyx
-landing page
+ <!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>THE VANGUARD - Người dẫn đầu</title>
+  <style>
+    :root{
+      --glass-bg: rgba(0,0,0,0.32);
+      --accent: #000;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;}
+    body {
+      margin: 0;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(rgba(0,0,0,0.36), rgba(0,0,0,0.36)), url('/mnt/data/f8886f9d-7f16-40e8-a7d4-9a4eef381071.jpg') center/cover no-repeat;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      transition: all 0.35s ease;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    .wrap { width: 92%; max-width: 520px; }
+
+    .panel {
+      background: var(--glass-bg);
+      padding: 28px;
+      border-radius: 14px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      backdrop-filter: blur(8px) saturate(120%);
+      transition: opacity .35s ease, transform .35s ease;
+    }
+
+    .panel.hidden{ opacity: 0; transform: translateY(10px); pointer-events: none; height: 0; overflow: hidden; }
+
+    h1 { font-size: 2.4rem; font-weight: 700; margin: 0 0 6px 0; letter-spacing: 1px; color: #fff; }
+
+    .subtitle { margin: 0 0 20px 0; color: #e9e9e9; font-size: 1.05rem; }
+
+    .input-row { display:flex; gap:10px; align-items:center; }
+
+    input[type="email"]{
+      flex:1;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: box-shadow .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    input[type="email"]::placeholder{ color: rgba(255,255,255,0.6); }
+
+    input[type="email"]:focus{
+      border-color: rgba(255,255,255,0.28);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25) inset;
+      background: rgba(255,255,255,0.08);
+    }
+
+    button.cta{
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #fff;
+      color: var(--accent);
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      min-width:100px;
+      transition: transform .12s ease, background .12s ease;
+    }
+    button.cta:hover{ transform: translateY(-2px); }
+
+    .transfer-info{ text-align:left; color:#fff; }
+    .transfer-info h2{ text-align:center; margin-top:0; margin-bottom:12px; font-size:1.5rem; }
+    .row{ display:flex; justify-content:space-between; gap:12px; align-items:center; padding:8px 0; }
+    .label{ color: #dcdcdc; font-size:0.95rem; }
+    .value{ font-weight:700; font-size:1rem; }
+
+    .muted{ color: #e5e5e5; font-size:0.95rem; }
+
+    .actions{ display:flex; gap:8px; margin-top:16px; }
+    .btn-ghost{ background:transparent; border:1px solid rgba(255,255,255,0.16); color:#fff; padding:8px 10px; border-radius:10px; cursor:pointer; }
+    .btn-primary{ background:#fff; color:#000; padding:8px 10px; border-radius:10px; border:none; cursor:pointer; font-weight:600; }
+
+    .small{ font-size:0.9rem; }
+    .brand{ text-align:center; margin-top:18px; font-weight:700; letter-spacing:1px; }
+
+    .note{
+      margin-top:20px;
+      font-size:0.95rem;
+      color:#f5f5f5;
+      line-height:1.5;
+      text-align:center;
+    }
+
+    @media (max-width:600px){ h1{ font-size:1.8rem } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div id="nav1" class="panel">
+      <h1>THE VANGUARD</h1>
+      <div class="subtitle">Người dẫn đầu</div>
+      <div class="input-row" style="margin-bottom:8px;">
+        <input id="email" type="email" placeholder="Nhập Gmail của bạn..." aria-label="Email" />
+        <button class="cta" id="signupBtn">Đăng ký</button>
+      </div>
+      <div class="muted small">Nhập email để nhận hướng dẫn chuyển khoản. Rất nhanh — không spam.</div>
+    </div>
+
+    <div id="nav2" class="panel hidden">
+      <div class="transfer-info">
+        <h2>Thông tin chuyển khoản</h2>
+        <div class="row">
+          <div class="label">Ngân hàng</div>
+          <div class="value">Techcombank</div>
+        </div>
+        <div class="row">
+          <div class="label">Tên tài khoản</div>
+          <div class="value">TRƯƠNG THÀNH ĐẠT</div>
+        </div>
+        <div class="row">
+          <div class="label">Số tài khoản</div>
+          <div class="value" id="accNumberDisplay">7820 0511 10</div>
+        </div>
+        <div class="row">
+          <div class="label">Nội dung</div>
+          <div class="value">Họ tên + SĐT</div>
+        </div>
+        <div class="actions">
+          <button id="copyBtn" class="btn-ghost">Sao chép STK</button>
+        </div>
+        <div class="note">
+          Sau khi chuyển khoản, hãy chụp màn hình giao dịch và gửi qua Instagram <strong>GatsbyX</strong>. Đây sẽ là “hóa đơn” của chính bạn — đảm bảo quyền lợi, quà tặng, và xác nhận bạn đã trở thành một phần của cộng đồng <strong>Người dẫn đầu</strong>.
+        </div>
+        <div class="brand">GatsbyX</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const nav1 = document.getElementById('nav1');
+    const nav2 = document.getElementById('nav2');
+    const emailInput = document.getElementById('email');
+    const signupBtn = document.getElementById('signupBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const accNumberDisplay = document.getElementById('accNumberDisplay');
+
+    function showNav(target){
+      if (target === 'nav2'){
+        nav1.classList.add('hidden');
+        setTimeout(()=> nav2.classList.remove('hidden'), 50);
+        window.scrollTo({top:0,behavior:'smooth'});
+      } else {
+        nav2.classList.add('hidden');
+        setTimeout(()=> nav1.classList.remove('hidden'), 50);
+        window.scrollTo({top:0,behavior:'smooth'});
+      }
+    }
+
+    function isValidEmail(email){
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    signupBtn.addEventListener('click', ()=>{
+      const email = emailInput.value.trim();
+      if (!isValidEmail(email)){
+        alert('Vui lòng nhập Gmail hợp lệ');
+        emailInput.focus();
+        return;
+      }
+      showNav('nav2');
+    });
+
+    copyBtn.addEventListener('click', async ()=>{
+      try{
+        await navigator.clipboard.writeText(accNumberDisplay.textContent.trim());
+        copyBtn.textContent = 'Đã sao chép';
+        setTimeout(()=> copyBtn.textContent = 'Sao chép STK', 1500);
+      }catch(e){
+        alert('Không thể sao chép tự động. Vui lòng sao chép thủ công.');
+      }
+    });
+
+    emailInput.addEventListener('keypress', (e)=>{ if (e.key === 'Enter') signupBtn.click(); });
+  </script>
+</body>
+</html>
