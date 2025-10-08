@@ -187,31 +187,15 @@
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
 
-  async function handleSubmit(e){
-  e.preventDefault(); // stop the page reload
+signupBtn.addEventListener('click', ()=>{
   const email = emailInput.value.trim();
-
   if (!isValidEmail(email)){
     alert('Vui lòng nhập Gmail hợp lệ');
     emailInput.focus();
-    return false;
+    return;
   }
-
-  try {
-    // send to Make webhook
-    await fetch("https://hook.eu1.make.com/your-webhook-id", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email })
-    });
-
-    showNav('nav2'); // show next section
-  } catch (err) {
-    alert("Lỗi kết nối. Vui lòng thử lại.");
-    console.error(err);
-  }
-  return false;
-}
+  showNav('nav2');
+});
 
 
     copyBtn.addEventListener('click', async ()=>{
@@ -231,6 +215,7 @@
 
 </body>
 </html>
+
 
 
 
