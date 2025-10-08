@@ -163,58 +163,78 @@
     </div>
   </div>
 
-  <script>
-    const nav1 = document.getElementById('nav1');
-    const nav2 = document.getElementById('nav2');
-    const emailInput = document.getElementById('email');
-    const signupBtn = document.getElementById('signupBtn');
-    const copyBtn = document.getElementById('copyBtn');
-    const accNumberDisplay = document.getElementById('accNumberDisplay');
+<script>
+  const nav1 = document.getElementById('nav1');
+  const nav2 = document.getElementById('nav2');
+  const emailInput = document.getElementById('email');
+  const copyBtn = document.getElementById('copyBtn');
+  const accNumberDisplay = document.getElementById('accNumberDisplay');
+  const emailForm = document.getElementById('emailForm');
 
-    function showNav(target){
-      if (target === 'nav2'){
-        nav1.classList.add('hidden');
-        setTimeout(()=> nav2.classList.remove('hidden'), 50);
-        window.scrollTo({top:0,behavior:'smooth'});
-      } else {
-        nav2.classList.add('hidden');
-        setTimeout(()=> nav1.classList.remove('hidden'), 50);
-        window.scrollTo({top:0,behavior:'smooth'});
-      }
+  function showNav(target) {
+    if (target === 'nav2') {
+      nav1.classList.add('hidden');
+      setTimeout(() => nav2.classList.remove('hidden'), 150);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      nav2.classList.add('hidden');
+      setTimeout(() => nav1.classList.remove('hidden'), 150);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-
-    function isValidEmail(email){
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
-
-signupBtn.addEventListener('click', ()=>{
-  const email = emailInput.value.trim();
-  if (!isValidEmail(email)){
-    alert('Vui lòng nhập Gmail hợp lệ');
-    emailInput.focus();
-    return;
   }
-  showNav('nav2');
-});
 
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
 
-    copyBtn.addEventListener('click', async ()=>{
-      try{
-        await navigator.clipboard.writeText(accNumberDisplay.textContent.trim());
-        copyBtn.textContent = 'Đã sao chép';
-        setTimeout(()=> copyBtn.textContent = 'Sao chép STK', 1500);
-      }catch(e){
-        alert('Không thể sao chép tự động. Vui lòng sao chép thủ công.');
-      }
-    });
+  // ✅ Handle form submission (no page reload)
+  emailForm.addToEventListener('submit', async (e) => {
+    e.preventDefault(); // stop normal form submit
 
-    emailInput.addEventListener('keypress', (e)=>{ if (e.key === 'Enter') signupBtn.click(); });
-  </script>
+    const email = emailInput.value.trim();
+    if (!isValidEmail(email)) {
+      alert('Vui lòng nhập Gmail hợp lệ');
+      emailInput.focus();
+      return;
+    }
+
+    // Send to Make
+    try {
+      await fetch("https://hook.eu2.make.com/csxwrlh99r7xehjqkf869qmefd9cb6w1", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+    } catch (error) {
+      console.error('Lỗi khi gửi dữ liệu:', error);
+      // Even if sending fails, still show nav2
+    }
+
+    // Show transfer info
+    showNav('nav2');
+  });
+
+  // Copy STK button
+  copyBtn.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(accNumberDisplay.textContent.trim());
+      copyBtn.textContent = 'Đã sao chép';
+      setTimeout(() => (copyBtn.textContent = 'Sao chép STK'), 1500);
+    } catch (e) {
+      alert('Không thể sao chép tự động. Vui lòng sao chép thủ công.');
+    }
+  });
+
+  emailInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') emailForm.dispatchEvent(new Event('submit'));
+  });
+</script>
  
  
 
 </body>
 </html>
+
 
 
 
